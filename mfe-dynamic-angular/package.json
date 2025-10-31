@@ -1,0 +1,46 @@
+{
+  "name": "mfe-dynamic-angular",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve --port 3003",
+    "build": "ng build --configuration production",
+    "build:wc": "npm run build && node build-webcomponent.js",
+    "serve:wc": "http-server ./dist -p 3003 --cors",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@angular/animations": "^20.3.9",
+    "@angular/common": "^20.3.9",
+    "@angular/compiler": "^20.3.9",
+    "@angular/core": "^20.3.9",
+    "@angular/elements": "^20.3.9",
+    "@angular/forms": "^20.3.9",
+    "@angular/platform-browser": "^20.3.9",
+    "@angular/platform-browser-dynamic": "^20.3.9",
+    "@angular/router": "^20.3.9",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.8.1",
+    "zone.js": "^0.15.1"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^20.3.8",
+    "@angular/cli": "^20.3.8",
+    "@angular/compiler-cli": "^20.3.9",
+    "@types/node": "^22.18.13",
+    "concat": "^1.0.3",
+    "copy-webpack-plugin": "^12.0.2",
+    "html-webpack-plugin": "^5.6.4",
+    "http-server": "^14.1.1",
+    "ts-loader": "^9.5.4",
+    "typescript": "~5.8.2",
+    "webpack": "^5.102.1",
+    "webpack-cli": "^5.1.4"
+  }
+}
