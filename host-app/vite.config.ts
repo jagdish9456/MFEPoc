@@ -25,13 +25,7 @@ export default defineConfig({
     federation({
       name: 'host_app',
       remotes: {
-        reactMfeModule: {
-          type: 'module',
-          name: 'reactMfeModule',
-          entry: 'http://localhost:3004/assets/remoteEntry.js',
-          entryGlobalName: 'reactMfeModule',
-          shareScope: 'default',
-        },
+        reactMfeModule: 'reactMfeModule@http://localhost:3004/remoteEntry.js',
       },
       shared: {
         react: {
