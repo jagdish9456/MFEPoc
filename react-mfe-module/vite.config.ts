@@ -2,17 +2,16 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { federation } from '@module-federation/vite';
 
-// https://vite.dev/config/
 export default defineConfig({
   server: {
-    port: 3000,
+    port: 3004,
     cors: true,
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
   },
   preview: {
-    port: 3000,
+    port: 3004,
     cors: true,
   },
   build: {
@@ -23,15 +22,12 @@ export default defineConfig({
   plugins: [
     react(),
     federation({
-      name: 'host_app',
-      remotes: {
-        reactMfeModule: {
-          type: 'module',
-          name: 'reactMfeModule',
-          entry: 'http://localhost:3004/assets/remoteEntry.js',
-          entryGlobalName: 'reactMfeModule',
-          shareScope: 'default',
-        },
+      name: 'reactMfeModule',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './ReactMFE': './src/components/ReactMFERemote.tsx',
+        './ProductList': './src/components/ProductList.tsx',
+        './UserProfile': './src/components/UserProfile.tsx',
       },
       shared: {
         react: {

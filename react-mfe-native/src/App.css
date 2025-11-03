@@ -1,0 +1,44 @@
+.standalone-wrapper {
+  font-family: system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.mfe-header {
+  background: #2196f3;
+  color: white;
+  padding: 16px 24px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.mfe-header h1 {
+  margin: 0 0 12px 0;
+  font-size: 24px;
+}
+
+.mfe-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-button {
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.2);
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.nav-button:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+.mfe-content {
+  flex: 1;
+  padding: 20px;
+  background: #f5f5f5;
+}

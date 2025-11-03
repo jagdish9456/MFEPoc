@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React Native MFE - Demo</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        background: #f5f5f5;
+      }
+      .demo-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .demo-header {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .controls {
+        display: flex;
+        gap: 16px;
+        margin-top: 16px;
+        flex-wrap: wrap;
+      }
+      .control-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      label {
+        font-size: 14px;
+        font-weight: 500;
+      }
+      select, button {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+      button {
+        background: #2196f3;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #1976d2;
+      }
+      .mfe-wrapper {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        min-height: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="demo-container">
+      <div class="demo-header">
+        <h1>React Native MFE - Demo Page</h1>
+        <p>Test the web component with different configurations</p>
+        
+        <div class="controls">
+          <div class="control-group">
+            <label>Component:</label>
+            <select id="componentSelect">
+              <option value="home">Home</option>
+              <option value="dashboard">Dashboard</option>
+              <option value="products">Products</option>
+              <option value="orders">Orders</option>
+              <option value="customers">Customers</option>
+              <option value="analytics">Analytics</option>
+              <option value="settings">Settings</option>
+              <option value="reports">Reports</option>
+              <option value="inventory">Inventory</option>
+              <option value="billing">Billing</option>
+              <option value="support">Support</option>
+              <option value="notifications">Notifications</option>
+            </select>
+          </div>
+          
+          <div class="control-group">
+            <label>Mode:</label>
+            <select id="standaloneSelect">
+              <option value="false">Embedded (No Router)</option>
+              <option value="true">Standalone (With Router)</option>
+            </select>
+          </div>
+          
+          <button onclick="updateMFE()">Update MFE</button>
+          <button onclick="showManifest()">Show Manifest</button>
+        </div>
+      </div>
+
+      <div class="mfe-wrapper">
+        <react-native-mfe component-name="home" standalone="false"></react-native-mfe>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      function updateMFE() {
+        const component = document.getElementById('componentSelect').value;
+        const standalone = document.getElementById('standaloneSelect').value;
+        const mfe = document.querySelector('react-native-mfe');
+        mfe.setAttribute('component-name', component);
+        mfe.setAttribute('standalone', standalone);
+        console.log('Updated MFE:', { component, standalone });
+      }
+
+      function showManifest() {
+        if (window.getReactNativeMfeManifest) {
+          const manifest = window.getReactNativeMfeManifest();
+          console.log('Manifest:', manifest);
+          alert(JSON.stringify(manifest, null, 2));
+        } else {
+          alert('Manifest not available yet. Wait for MFE to load.');
+        }
+      }
+    </script>
+  </body>
+</html>

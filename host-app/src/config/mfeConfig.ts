@@ -16,12 +16,21 @@ export interface MFEConfig {
 
 export const mfeConfig: Record<string, MFEConfig> = {
   // Module Federation MFEs
-  leftNav: {
-    name: 'Left Navigation',
+  
+  reactMfeModule: {
+    name: 'React MFE Module',
     type: 'module-federation',
-    url: 'http://localhost:3001',
-    scope: 'leftNav',
-    module: './LeftNav',
+    url: 'http://localhost:3004',
+    scope: 'reactMfeModule',
+    module: './ReactMFE',
+  },
+  
+  reactNativeMfe: {
+    name: 'React Native MFE',
+    type: 'web-component',
+    url: 'http://localhost:3005',
+    elementName: 'react-native-mfe',
+    manifestUrl: 'http://127.0.0.1:3005/react-native-mfe.js ',
   },
   
   // Web Component MFEs

@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-do
 import { HomePage } from './pages/HomePage';
 import { LeftNavPage } from './pages/LeftNavPage';
 import { DynamicAngularPage } from './pages/DynamicAngularPage';
+import { ReactMFEPage } from './pages/ReactMFEPage';
+import { ReactNativeMFEPage } from './pages/ReactNativeMFEPage';
 import './App.css';
 import { Profile } from './pages/Profile';
 
@@ -18,14 +20,17 @@ const Navigation: React.FC = () => {
         <li className={location.pathname === '/' ? 'active' : ''}>
           <Link to="/">Home</Link>
         </li>
-        <li className={location.pathname === '/left-nav' ? 'active' : ''}>
-          <Link to="/left-nav">Left Nav MFE</Link>
+        <li className={location.pathname === '/profile' ? 'active' : ''}>
+          <Link to="/profile">Angular Profile</Link>
+        </li>
+        <li className={location.pathname === '/react-mfe' ? 'active' : ''}>
+          <Link to="/react-mfe">React MFE</Link>
+        </li>
+        <li className={location.pathname === '/react-native-mfe' ? 'active' : ''}>
+          <Link to="/react-native-mfe">React Native</Link>
         </li>
         <li className={location.pathname === '/dynamic-angular' ? 'active' : ''}>
-          <Link to="/dynamic-angular">Dynamic Angular MFE</Link>
-        </li>
-        <li className={location.pathname === '/profile' ? 'active' : ''}>
-          <Link to="/profile">Profile</Link>
+          <Link to="/dynamic-angular">Angular MFE</Link>
         </li>
       </ul>
     </nav>
@@ -41,8 +46,10 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/left-nav" element={<LeftNavPage />} />
-            <Route path="/dynamic-angular" element={<DynamicAngularPage />} />
+            <Route path="/react-mfe" element={<ReactMFEPage />} />
+            <Route path="/react-native-mfe" element={<ReactNativeMFEPage />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/dynamic-angular" element={<DynamicAngularPage />} />
             <Route path="*" element={
               <div className="not-found">
                 <h2>404 - Page Not Found</h2>
@@ -51,9 +58,7 @@ function App() {
             } />
           </Routes>
         </main>
-        <footer className="main-footer">
-          <p>MFE Host Application - Micro Frontend Integration Platform</p>
-        </footer>
+       
       </div>
     </BrowserRouter>
   );
