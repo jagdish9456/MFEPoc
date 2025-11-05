@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { emitData } from '../services/EventBus';
 
 interface Product {
   id: number;
@@ -66,7 +67,7 @@ export const ProductList: React.FC = () => {
 
       <div style={styles.grid}>
         {filteredProducts.map(product => (
-          <div key={product.id} style={styles.card}>
+          <div key={product.id} style={styles.card} onClick={() => emitData({ fromApp: 'reactMfeModule', channel: 'product:selected', payload: product })}>
             <h3 style={styles.productName}>{product.name}</h3>
             <p style={styles.category}>{product.category}</p>
             <p style={styles.price}>${product.price}</p>

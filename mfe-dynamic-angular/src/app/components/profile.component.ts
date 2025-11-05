@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { emitNavigation } from '../services/event-bus.service';
 
 @Component({
   selector: 'app-profile',
@@ -13,7 +14,7 @@ import { CommonModule } from '@angular/common';
         <p><strong>Name:</strong> John Doe</p>
         <p><strong>Email:</strong> john.doe@example.com</p>
         <p><strong>Role:</strong> Administrator</p>
-        <button>Edit Profile</button>
+        <button (click)="goToDashboard()">Go to Dashboard</button>
       </div>
     </div>
   `,
@@ -23,4 +24,8 @@ import { CommonModule } from '@angular/common';
     button { background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
   `]
 })
-export class ProfileComponent {}
+export class ProfileComponent {
+  goToDashboard() {
+    emitNavigation({ fromApp: 'mfe-dynamic-angular', toRoute: '/dynamic-angular', query: { component: 'dashboard' } });
+  }
+}

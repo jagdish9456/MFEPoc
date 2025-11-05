@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { componentRegistry } from './services/ComponentRegistry';
 import './App.css';
+import { registerAllowedRoutes, emitNavigation } from './services/EventBus';
 
 interface AppProps {
   componentName?: string;
@@ -13,18 +14,13 @@ const EmbeddedMode: React.FC<{ componentName: string }> = ({ componentName }) =>
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    registerAllowedRoutes(['/react-native-mfe']);
     const meta = componentRegistry.getComponent(componentName);
     if (meta) {
       setCurrentComponent(() => meta.component);
       setError(null);
-      
-      // Emit custom event for host navigation tracking
-      const event = new CustomEvent('react-mfe-navigation', {
-        detail: { componentName, timestamp: new Date().toISOString() },
-        bubbles: true,
-        composed: true,
-      });
-      window.dispatchEvent(event);
+      // Emit secure navigation to host
+      emitNavigation({ fromApp: 'react-mfe-native', toRoute: '/react-native-mfe', query: { component: componentName } });
     } else {
       setError(`Component "${componentName}" not found`);
     }

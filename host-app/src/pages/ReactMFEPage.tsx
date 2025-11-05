@@ -1,47 +1,34 @@
-import React, { useState } from 'react';
-import { MFELoader } from '../components/MFELoader';
-import { getMFEConfig } from '../config/mfeConfig';
+import React, { Suspense } from 'react';
 
-export const ReactMFEPage: React.FC = () => {
-  const [selectedView, setSelectedView] = useState<'dashboard' | 'products' | 'profile'>('dashboard');
-  const config = getMFEConfig('reactMfeModule');
+// Lazily import the components from the remote module
+const ProductList = React.lazy(() => import('reactMfeModule/ProductList'));
+const UserProfile = React.lazy(() => import('reactMfeModule/UserProfile'));
+const ReactMFE = React.lazy(() => import('reactMfeModule/ReactMFE'));
 
-  if (!config) {
-    return <div>Error: MFE configuration not found</div>;
-  }
-
+export function ReactMFEPage() {
   return (
-    <div className="mfe-page">
-      <div className="mfe-header">
-        <h2>{config.name}</h2>
-        <span className="badge">{config.type}</span>
-      </div>
+    <div>
+      <h1>Host Application</h1>
+      <p>This application consumes components from a remote module federation setup.</p>
+      
+      <hr />
 
-      <div className="mfe-controls">
-        <div className="control-group">
-          <label htmlFor="view-select">Select View:</label>
-          <select
-            id="view-select"
-            value={selectedView}
-            onChange={(e) => setSelectedView(e.target.value as any)}
-          >
-            <option value="dashboard">Dashboard</option>
-            <option value="products">Products</option>
-            <option value="profile">Profile</option>
-          </select>
-        </div>
+      {/* Use Suspense to provide a fallback while the remote component is loading */}
+      <Suspense fallback={<div>Loading User Profile...</div>}>
+        <UserProfile />
+      </Suspense>
+      
+      <hr />
 
-        <div className="info-message">
-          <span>📦 Module Federation - Shared React dependencies</span>
-        </div>
-      </div>
+      <Suspense fallback={<div>Loading Product List...</div>}>
+        <ProductList />
+      </Suspense>
 
-      <div className="mfe-container">
-        <MFELoader 
-          config={config} 
-          view={selectedView}
-        />
-      </div>
+      <hr />
+
+      <Suspense fallback={<div>Loading ReactMFE...</div>}>
+        <ReactMFE />
+      </Suspense> 
     </div>
   );
 };

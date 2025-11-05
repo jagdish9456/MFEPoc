@@ -5,6 +5,7 @@ import { ComponentRegistryService } from './services/component-registry.service'
 import { ManifestService } from './services/manifest.service';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { registerAllowedRoutes, emitNavigation } from './services/event-bus.service';
 
 @Component({
   selector: 'app-root',
@@ -102,6 +103,9 @@ export class AppComponent implements OnInit, OnDestroy, OnChanges {
       // Embedded mode: Use dynamic component loading without router
       this.initializeEmbeddedMode();
     }
+
+    // Register allowed navigation targets for security
+    registerAllowedRoutes(['/dynamic-angular']);
   }
 
   ngOnDestroy() {
@@ -196,26 +200,11 @@ export class AppComponent implements OnInit, OnDestroy, OnChanges {
     this.currentComponent = componentMetadata.name;
     
     console.log('[Dynamic MFE] Component loaded:', this.currentComponent);
-    
-    // Emit custom event to host application
-    this.emitNavigationEvent(componentName);
+    // Navigation event is emitted only on explicit user actions (e.g., button click)
   }
 
   private emitNavigationEvent(componentName: string) {
-    const event = new CustomEvent('mfe-navigation', {
-      detail: {
-        componentName,
-        currentComponent: this.currentComponent,
-        timestamp: new Date().toISOString()
-      },
-      bubbles: true,
-      composed: true // Allow event to cross shadow DOM boundary
-    });
-    
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(event);
-    }
-    
+    emitNavigation({ fromApp: 'mfe-dynamic-angular', toRoute: '/dynamic-angular', query: { component: componentName, currentComponent: this.currentComponent } });
     console.log('[Dynamic MFE] Navigation event emitted:', componentName);
   }
 

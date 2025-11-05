@@ -1,6 +1,7 @@
 import React from 'react';
 import { ProductList } from './ProductList';
 import { UserProfile } from './UserProfile';
+import { emitNavigation, registerAllowedRoutes } from '../services/EventBus';
 
 interface ReactMFERemoteProps {
   view?: 'products' | 'profile' | 'dashboard';
@@ -14,12 +15,21 @@ export const ReactMFERemote: React.FC<ReactMFERemoteProps> = ({
   const [currentView, setCurrentView] = React.useState(view);
 
   React.useEffect(() => {
-    setCurrentView(view);
-  }, [view]);
+    registerAllowedRoutes(['/profile', '/react-mfe']);
+  }, []);
 
   const handleViewChange = (newView: 'products' | 'profile' | 'dashboard') => {
     setCurrentView(newView);
     onNavigate?.(newView);
+
+    // Bubble navigation intent to host
+    if (newView === 'profile') {
+      emitNavigation({ fromApp: 'reactMfeModule', toRoute: '/profile' });
+    } else if (newView === 'products') {
+      emitNavigation({ fromApp: 'reactMfeModule', toRoute: '/react-mfe', query: { tab: 'products' } });
+    } else {
+      emitNavigation({ fromApp: 'reactMfeModule', toRoute: '/react-mfe' });
+    }
   };
 
   return (
