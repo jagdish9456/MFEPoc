@@ -18,17 +18,7 @@ export function ReactMFEPage() {
         <UserProfile />
       </Suspense>
       
-      <hr />
-
-      <Suspense fallback={<div>Loading Product List...</div>}>
-        <ProductList />
-      </Suspense>
-
-      <hr />
-
-      <Suspense fallback={<div>Loading ReactMFE...</div>}>
-        <ReactMFE />
-      </Suspense> 
+     
     </div>
   );
 };

@@ -1,9 +1,15 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import { federation } from '@module-federation/vite';
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, '.', '');
+  
+  // Environment-based remote URLs with fallback to localhost
+  const REACT_MFE_URL = env.VITE_REACT_MFE_URL || 'http://localhost:3004';
+
+  return {
   server: {
     port: 3000,
     cors: true,
@@ -25,7 +31,13 @@ export default defineConfig({
     federation({
       name: 'host_app',
       remotes: {
-        reactMfeModule: 'reactMfeModule@http://localhost:3004/remoteEntry.js',
+        reactMfeModule: {
+          type: 'module',
+          name: 'reactMfeModule',
+          entry: `${REACT_MFE_URL}/remoteEntry.js`,
+          entryGlobalName: 'reactMfeModule',
+          shareScope: 'default',
+        },
       },
       shared: {
         react: {
@@ -43,4 +55,5 @@ export default defineConfig({
       },
     }),
   ],
+  };
 });

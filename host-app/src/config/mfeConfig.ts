@@ -20,7 +20,7 @@ export const mfeConfig: Record<string, MFEConfig> = {
   reactMfeModule: {
     name: 'React MFE Module',
     type: 'module-federation',
-    url: 'http://localhost:3004',
+    url: import.meta.env.VITE_REACT_MFE_URL || 'http://localhost:3004',
     scope: 'reactMfeModule',
     module: './ReactMFE',
   },
@@ -28,18 +28,18 @@ export const mfeConfig: Record<string, MFEConfig> = {
   reactNativeMfe: {
     name: 'React Native MFE',
     type: 'web-component',
-    url: 'http://localhost:3005',
+    url: import.meta.env.VITE_REACT_NATIVE_MFE_URL || 'http://localhost:3005',
     elementName: 'react-native-mfe',
-    manifestUrl: 'http://127.0.0.1:3005/react-native-mfe.js ',
+    manifestUrl: `${import.meta.env.VITE_REACT_NATIVE_MFE_URL || 'http://localhost:3005'}/react-native-mfe.js`,
   },
   
   // Web Component MFEs
   dynamicAngular: {
     name: 'Dynamic Angular MFE',
     type: 'web-component',
-    url: 'http://localhost:3003',
+    url: import.meta.env.VITE_DYNAMIC_ANGULAR_MFE_URL || 'http://localhost:3003',
     elementName: 'dynamic-mfe',
-    manifestUrl: 'http://127.0.0.1:3003/dynamic-mfe.js',
+    manifestUrl: `${import.meta.env.VITE_DYNAMIC_ANGULAR_MFE_URL || 'http://localhost:3003'}/dynamic-mfe.js`,
   },
 };
 
