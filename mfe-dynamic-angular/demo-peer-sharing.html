@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peer-to-Peer MFE Sharing Demo</title>
+  <link rel="stylesheet" href="http://localhost:3003/dynamic-mfe-shared.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .demo-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .info-box {
+      background: #e3f2fd;
+      border-left: 4px solid #2196f3;
+      padding: 15px;
+      margin: 20px 0;
+    }
+    .mfe-instance {
+      border: 2px solid #ddd;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 4px;
+    }
+    .mfe-instance h3 {
+      margin-top: 0;
+      color: #333;
+    }
+    button {
+      background: #2196f3;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background: #1976d2;
+    }
+    .console-output {
+      background: #263238;
+      color: #aed581;
+      padding: 15px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      margin: 10px 0;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-container">
+    <h1>🔄 Peer-to-Peer MFE Shared Dependencies Demo</h1>
+    
+    <div class="info-box">
+      <h3>How This Works:</h3>
+      <ol>
+        <li><strong>No Host Dependencies Required:</strong> The host doesn't provide Angular/Zone.js/RxJS</li>
+        <li><strong>First MFE Shares:</strong> The first Angular MFE loaded registers its dependencies in the global registry</li>
+        <li><strong>Subsequent MFEs Consume:</strong> Additional Angular MFEs use the shared dependencies</li>
+        <li><strong>Singleton Pattern:</strong> Only one instance of Angular/Zone.js/RxJS exists across all MFEs</li>
+        <li><strong>Independent Operation:</strong> Each MFE can work standalone if registry not available</li>
+      </ol>
+    </div>
+
+    <h2>Registry Status:</h2>
+    <div id="registry-status" class="console-output">
+      Checking registry...
+    </div>
+
+    <h2>Actions:</h2>
+    <button onclick="checkRegistry()">🔍 Check Registry</button>
+    <button onclick="loadFirstMFE()">📦 Load First Angular MFE</button>
+    <button onclick="loadSecondMFE()">📦 Load Second Angular MFE</button>
+    <button onclick="clearAll()">🗑️ Clear All</button>
+
+    <h2>MFE Instances:</h2>
+    <div id="mfe-container"></div>
+
+    <h2>Console Output:</h2>
+    <div id="console-log" class="console-output"></div>
+  </div>
+
+  <script>
+    // Intercept console.log to show in UI
+    const originalLog = console.log;
+    const logContainer = document.getElementById('console-log');
+    const registryStatus = document.getElementById('registry-status');
+    const mfeContainer = document.getElementById('mfe-container');
+    let mfeCount = 0;
+
+    console.log = function(...args) {
+      originalLog.apply(console, args);
+      const message = args.map(arg => 
+        typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+      ).join(' ');
+      logContainer.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${message}</div>`;
+      logContainer.scrollTop = logContainer.scrollHeight;
+    };
+
+    function checkRegistry() {
+      if (window.__SHARED_DEPS__) {
+        const stats = window.__SHARED_DEPS__.getStats();
+        registryStatus.innerHTML = `
+          <strong>✅ Registry Available</strong><br>
+          Total Dependencies: ${stats.total}<br>
+          <pre>${JSON.stringify(stats.dependencies, null, 2)}</pre>
+        `;
+        console.log('Registry stats:', stats);
+      } else {
+        registryStatus.innerHTML = '<strong>❌ Registry Not Available</strong>';
+        console.log('No shared registry found');
+      }
+    }
+
+    function loadFirstMFE() {
+      mfeCount++;
+      const div = document.createElement('div');
+      div.className = 'mfe-instance';
+      div.innerHTML = `
+        <h3>Angular MFE Instance #${mfeCount} (First - Will Register Dependencies)</h3>
+        <dynamic-mfe component-name="dashboard"></dynamic-mfe>
+      `;
+      mfeContainer.appendChild(div);
+      console.log(`Loading Angular MFE #${mfeCount} - should register dependencies`);
+      setTimeout(checkRegistry, 1000);
+    }
+
+    function loadSecondMFE() {
+      mfeCount++;
+      const div = document.createElement('div');
+      div.className = 'mfe-instance';
+      div.innerHTML = `
+        <h3>Angular MFE Instance #${mfeCount} (Should Use Shared Dependencies)</h3>
+        <dynamic-mfe component-name="analytics"></dynamic-mfe>
+      `;
+      mfeContainer.appendChild(div);
+      console.log(`Loading Angular MFE #${mfeCount} - should consume shared dependencies`);
+      setTimeout(checkRegistry, 1000);
+    }
+
+    function clearAll() {
+      mfeContainer.innerHTML = '';
+      logContainer.innerHTML = '';
+      mfeCount = 0;
+      console.log('Cleared all MFEs');
+      checkRegistry();
+    }
+
+    // Initialize
+    console.log('Demo page loaded');
+    checkRegistry();
+  </script>
+
+  <!-- Load the Angular MFE script (with peer-to-peer sharing support) -->
+  <script src="http://localhost:3003/dynamic-mfe-shared.js"></script>
+</body>
+</html>

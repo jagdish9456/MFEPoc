@@ -1,4 +1,4 @@
-import React from 'react';
+import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { componentRegistry } from './services/ComponentRegistry';
@@ -46,9 +46,9 @@ class ReactNativeMFE extends HTMLElement {
     }
 
     this.root.render(
-      <React.StrictMode>
+      <StrictMode>
         <App componentName={this.componentName} standalone={this.standalone} />
-      </React.StrictMode>
+      </StrictMode>
     );
   }
 }

@@ -7,6 +7,7 @@
     "start": "ng serve --port 3003",
     "build": "ng build --configuration production",
     "build:wc": "npm run build && node build-webcomponent.js",
+    "build:wc:shared": "npm run build && node build-webcomponent-shared.js",
     "serve:wc": "http-server ./dist -p 3003 --cors",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"

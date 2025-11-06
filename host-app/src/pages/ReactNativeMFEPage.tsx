@@ -31,6 +31,12 @@ export const ReactNativeMFEPage: React.FC = () => {
           componentName={selectedComponent}
           standalone={standaloneMode}
         />
+
+        <MFELoader
+          config={config}
+          componentName="dashboard"
+          standalone={standaloneMode}
+        />
       </div>
     </div>
   );

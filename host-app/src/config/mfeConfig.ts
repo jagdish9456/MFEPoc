@@ -11,6 +11,7 @@ export interface MFEConfig {
   module?: string;
   elementName?: string;
   manifestUrl?: string;
+  useSharedDeps?: boolean; // Flag to use shared dependencies version
   fallback?: React.ComponentType;
 }
 
@@ -31,6 +32,7 @@ export const mfeConfig: Record<string, MFEConfig> = {
     url: import.meta.env.VITE_REACT_NATIVE_MFE_URL || 'http://localhost:3005',
     elementName: 'react-native-mfe',
     manifestUrl: `${import.meta.env.VITE_REACT_NATIVE_MFE_URL || 'http://localhost:3005'}/react-native-mfe.js`,
+    useSharedDeps: true, // Enable shared dependencies
   },
   
   // Web Component MFEs
@@ -39,7 +41,8 @@ export const mfeConfig: Record<string, MFEConfig> = {
     type: 'web-component',
     url: import.meta.env.VITE_DYNAMIC_ANGULAR_MFE_URL || 'http://localhost:3003',
     elementName: 'dynamic-mfe',
-    manifestUrl: `${import.meta.env.VITE_DYNAMIC_ANGULAR_MFE_URL || 'http://localhost:3003'}/dynamic-mfe.js`,
+    manifestUrl: `${import.meta.env.VITE_DYNAMIC_ANGULAR_MFE_URL || 'http://localhost:3003'}/dynamic-mfe-shared.js`, // Use shared deps version
+    useSharedDeps: true, // Enable shared dependencies
   },
 };
 
