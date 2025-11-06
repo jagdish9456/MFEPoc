@@ -15,7 +15,7 @@ export const ReactMFERemote: React.FC<ReactMFERemoteProps> = ({
   const [currentView, setCurrentView] = React.useState(view);
 
   React.useEffect(() => {
-    registerAllowedRoutes(['/profile', '/react-mfe']);
+    registerAllowedRoutes(['/profile', '/react-mfe', '/dynamic-angular']);
   }, []);
 
   const handleViewChange = (newView: 'products' | 'profile' | 'dashboard') => {

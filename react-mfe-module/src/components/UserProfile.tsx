@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { emitNavigation, registerAllowedRoutes } from '../services/EventBus';
 
 interface User {
   name: string;
@@ -30,6 +31,14 @@ export const UserProfile: React.FC = () => {
   const [user] = useState<User>(defaultUser);
   const [activeTab, setActiveTab] = useState<'overview' | 'activity' | 'settings'>('overview');
 
+  React.useEffect(() => {
+    registerAllowedRoutes(['/dynamic-angular']);
+  }, []);
+
+  const goToDashboard = () => {
+    emitNavigation({ fromApp: 'reactMfeModule', toRoute: '/dynamic-angular', query: { component: 'dashboard' } });
+  };
+
   return (
     <div style={styles.container}>
       <div style={styles.header}>
@@ -38,7 +47,12 @@ export const UserProfile: React.FC = () => {
           <div style={styles.userInfo}>
             <h2 style={styles.userName}>{user.name}</h2>
             <p style={styles.userEmail}>{user.email}</p>
-            <span style={styles.roleBadge}>{user.role}</span>
+            <div style={styles.badgeContainer}>
+              <span style={styles.roleBadge}>{user.role}</span>
+              <button style={styles.dashboardButton} onClick={goToDashboard}>
+                Go to Dashboard
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -187,6 +201,22 @@ const styles: { [key: string]: React.CSSProperties } = {
     borderRadius: '16px',
     fontSize: '12px',
     fontWeight: '600',
+  },
+  badgeContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+  },
+  dashboardButton: {
+    padding: '6px 16px',
+    backgroundColor: '#28a745',
+    color: 'white',
+    border: 'none',
+    borderRadius: '16px',
+    fontSize: '12px',
+    fontWeight: '600',
+    cursor: 'pointer',
+    transition: 'all 0.2s',
   },
   tabs: {
     display: 'flex',
